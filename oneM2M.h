@@ -2,24 +2,24 @@
 #define ONEM2M_H
 
 #include <cpprest/http_client.h>
-#include <cpprest/http_listener.h>
 #include <cpprest/json.h>
 #include <string>
 
-class OneM2M {
+using namespace web;
+using namespace web::http;
+using namespace web::http::client;
+
+class oneM2MClient {
 public:
-    // Constructor
-    OneM2M(const std::string& cseUrl, const std::string& notificationUrl);
+    oneM2MClient(const std::string& cseBase, const std::string& RVI);
 
-    // Function to create a subscription
-    void createSubscription(const std::string& resourceName, const std::string& subscriptionName);
-
-    // Function to start a notification server
-    void startNotificationServer();
+    pplx::task<http_response sendPostRequest(const std::string& resource, const json::value& payload);
 
 private:
-    std::string cseUrl;            // Base URL of the CSE server
-    std::string notificationUrl;   // URL of the local notification server
+  http_client client;
+  std::string RVI;
+
+  http_headers setHeaders();
 };
 
 #endif // ONEM2M_H
