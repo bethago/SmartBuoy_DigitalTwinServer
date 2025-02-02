@@ -11,10 +11,10 @@ endif()
 add_executable(main
         main.cpp
         oneM2M.cpp
-        TwinDevice.cpp
-        UnrealEngine.cpp
-        WriteLog.cpp
-        ReadLog.cpp
+#        TwinDevice.cpp
+#        UnrealEngine.cpp
+#        WriteLog.cpp
+#        ReadLog.cpp
 )
 
 find_package(cpprestsdk CONFIG REQUIRED)
