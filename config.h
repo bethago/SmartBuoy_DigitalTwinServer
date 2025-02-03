@@ -20,6 +20,6 @@
 #define DT_SERVER_PORT "10001"
 
 #define VS_SERVER_IP "127.0.0.1"
-#define VS_SERVER_PORT "10002"
+#define VS_SERVER_PORT 10002
 
 #endif // CONFIG_H

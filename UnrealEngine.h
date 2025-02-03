@@ -1,8 +1,20 @@
-//
-// Created by jjhsi on 25. 1. 29.
-//
+#ifndef UNREAL_ENGINE_H
+#define UNREAL_ENGINE_H
 
-#ifndef UNREALENGINE_H
-#define UNREALENGINE_H
+#include <string>
+#include <iostream>
+#include <boost/asio.hpp>
+#include <nlohmann/json.hpp>
+#include "TwinDevice.h"
 
-#endif //UNREALENGINE_H
+class UnrealEngineClient {
+public:
+    UnrealEngineClient(const std::string& serverIp, int serverPort);
+    bool isServerAvailable();
+    void sendData(const TwinDevice& device);
+
+    std::string serverIp;
+    int serverPort;
+};
+
+#endif // UNREAL_ENGINE_H

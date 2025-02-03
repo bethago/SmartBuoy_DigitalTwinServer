@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.30)
+﻿cmake_minimum_required(VERSION 3.30)
 project(SmartBuoy_DigitalTwinServer LANGUAGES CXX)
 
 set(CMAKE_CXX_STANDARD 17)
@@ -12,8 +12,14 @@ add_executable(main
         main.cpp
         oneM2M.cpp
         TwinDevice.cpp
-#        UnrealEngine.cpp
+        UnrealEngine.cpp
 )
 
 find_package(cpprestsdk CONFIG REQUIRED)
 target_link_libraries(main PRIVATE cpprestsdk::cpprest)
+
+find_package(Boost REQUIRED COMPONENTS system)
+target_link_libraries(main PRIVATE Boost::system)
+
+find_package(nlohmann_json CONFIG REQUIRED)
+target_link_libraries(main PRIVATE nlohmann_json::nlohmann_json)

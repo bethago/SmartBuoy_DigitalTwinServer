@@ -2,6 +2,7 @@
 #include "main.h"
 #include "oneM2M.h"
 #include "TwinDevice.h"
+#include "UnrealEngine.h"
 #include "config.h"
 
 bool isRealTimeCommunication() {
@@ -42,6 +43,9 @@ int main() {
     TwinDevice device(1, CLIENT, 1);
     device.initializeSensorOnlineStatus({{"accelerometer", true}, {"gps", true}, {"ultrasonic", true}, {"temperature", false}});
 
+    // setting unrealEngine
+    UnrealEngineClient ueClient(VS_SERVER_IP, VS_SERVER_PORT);
+
     while (true) {
         for (const auto& mid : grpMidList) {
             web::json::value body = client.discoveryCIN(utility::conversions::to_string_t(mid));
@@ -50,6 +54,11 @@ int main() {
         }
         device.evaluateDangerLevel();
         device.printDeviceInfo();
+        if (ueClient.isServerAvailable()) {
+            ueClient.sendData(device);
+        } else {
+            std::cerr << "Skipping transmission: Unreal Engine server is not running." << std::endl;
+        }
         std::this_thread::sleep_for(std::chrono::seconds(device.updateInterval));
 
         // send to ue5
