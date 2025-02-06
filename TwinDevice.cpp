@@ -1,7 +1,7 @@
 #include "TwinDevice.h"
 
-TwinDevice::TwinDevice(int deviceId, std::string deviceName, int updateInterval)
-    : deviceId(deviceId), deviceName(deviceName), updateInterval(updateInterval), dangerState(DangerLevel::SAFE) {
+TwinDevice::TwinDevice(int deviceId, std::string deviceName)
+    : deviceId(deviceId), deviceName(deviceName), dangerState(DangerLevel::SAFE) {
     sensorOnline["accelerometer"] = false;
     sensorOnline["gps"] = false;
     sensorOnline["ultrasonic"] = false;
@@ -68,10 +68,11 @@ void TwinDevice::evaluateDangerLevel() {
     }
 }
 
-void TwinDevice::initializeSensorOnlineStatus(const std::unordered_map<std::string, bool>& status) {
-    for (const auto& entry : status) {
-        if (sensorOnline.find(entry.first) != sensorOnline.end()) {
-            sensorOnline[entry.first] = entry.second;
+void TwinDevice::initializeSensorOnlineStatus() {
+    for (const auto& cntUri : cntUris) {
+        std::string sensorName = utility::conversions::to_utf8string(cntUri.substr(cntUri.rfind('/') + 1));
+        if (sensorOnline.find(sensorName) != sensorOnline.end()) {
+            sensorOnline[sensorName] = true;
         }
     }
 }

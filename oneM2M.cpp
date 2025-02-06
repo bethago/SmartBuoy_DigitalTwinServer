@@ -50,10 +50,10 @@ pplx::task<void> OneM2MClient::verifyCSE() {
         });
 }
 
-pplx::task<std::vector<utility::string_t>> OneM2MClient::fetchGRPMid() {
+pplx::task<std::vector<utility::string_t>> OneM2MClient::fetchGRPMid(const utility::string_t &aeName) {
     setRI(U("retrieve_grp"));
     setContentType(U("grp"));
-    return sendGetRequest(utility::string_t(U(CSE_URL)) + U("/") + U(CSE_BASE) + U("/") + U(GRP_RI))
+    return sendGetRequest(utility::string_t(U(CSE_URL)) + U("/") + U(CSE_BASE) + U("/grp_") + aeName)
         .then([](web::http::http_response response) -> std::vector<utility::string_t> {
             if (response.status_code() != 200) {
                 throw std::runtime_error("GRP not found");
@@ -102,14 +102,14 @@ pplx::task<void> OneM2MClient::ensureSubscription(const utility::string_t &subNa
         });
 }
 
-web::json::value OneM2MClient::discoveryCIN(const utility::string_t &cntName) {
+web::json::value OneM2MClient::discoveryCIN(const utility::string_t &cntUri) {
     setRI(U("retrieve_cin"));
     setContentType(U("cin"));
-    web::http::http_response response = sendGetRequest(utility::string_t(U(CSE_URL)) + U("/") + cntName + U("/la")).get();
+    web::http::http_response response = sendGetRequest(utility::string_t(U(CSE_URL)) + U("/") + cntUri + U("/la")).get();
     if (response.status_code() == 200) {
         return response.extract_json().get();
     } else {
-        std::cerr << "Failed to retrieve CIN for: " << utility::conversions::to_utf8string(cntName) << " (HTTP " << response.status_code() << ")" << std::endl;
+        std::cerr << "Failed to retrieve CIN for: " << utility::conversions::to_utf8string(cntUri) << " (HTTP " << response.status_code() << ")" << std::endl;
         return web::json::value();
     }
 }

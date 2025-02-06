@@ -1,9 +1,10 @@
 #ifndef CONFIG_H
 #define CONFIG_H
 
-#define CLIENT_COUNT 1
+#define CLIENT_COUNT 3
 #define CLIENT "BUOY1"
-#define GRP_RI "grp_BUOY1"
+#define CLIENTS {"BUOY1", "BUOY2", "BUOY3"}
+#define UPDATE_INTERVAL 1
 
 #define CSE_SERVER_PROTOCOL "http"
 #define CSE_SERVER_IP "127.0.0.1"
@@ -13,7 +14,6 @@
 
 #define X_M2M_ORIGIN "CAdmin"
 #define X_M2M_RVI "3"
-#define SUB_RESOURCE "/sensor_data"
 #define SUB_NOTIFY_URL "//" DT_SERVER_IP ":" DT_SERVER_PORT "/notify"
 
 #define DT_SERVER_IP "127.0.0.1"

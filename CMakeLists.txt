@@ -15,6 +15,8 @@ add_executable(main
         UnrealEngine.cpp
 )
 
+add_definitions(-D_WIN32_WINNT=0x0A00)
+
 find_package(cpprestsdk CONFIG REQUIRED)
 target_link_libraries(main PRIVATE cpprestsdk::cpprest)
 

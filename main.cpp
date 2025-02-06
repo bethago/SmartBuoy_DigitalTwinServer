@@ -32,39 +32,40 @@ int main() {
     std::cout << "Verifying CSE..." << std::endl;
     client.verifyCSE().wait();
 
-    std::cout << "Fetching Group MID..." << std::endl;
-    auto grpMidList = client.fetchGRPMid().get();
-    std::cout << "Group MID fetched successfully:" << std::endl;
-    for (const auto& mid : grpMidList) {
-        std::cout << "  - " << utility::conversions::to_utf8string(mid) << std::endl;
+    // setting twinDevice
+    std::vector<TwinDevice> devices;
+    std::vector<std::string> clientNames = CLIENTS;
+    for (int i = 0;i < CLIENT_COUNT; i++) {
+        devices.emplace_back(i+1, clientNames[i]);
     }
 
-    // setting twinDevice
-    TwinDevice device(1, CLIENT, 1);
-    device.initializeSensorOnlineStatus({{"accelerometer", true}, {"gps", true}, {"ultrasonic", true}, {"temperature", false}});
+    std::cout << "Fetching Group MID..." << std::endl;
+    for (auto& device : devices) {
+        device.cntUris = client.fetchGRPMid(utility::conversions::to_string_t(device.deviceName)).get();
+        std::cout << device.deviceName << std::endl;
+        for (const auto& mid : device.cntUris) {
+            std::cout << "  - " << utility::conversions::to_utf8string(mid) << std::endl;
+        }
+        device.initializeSensorOnlineStatus();
+    }
+    std::cout << "Group MID fetched successfully:" << std::endl;
 
     // setting unrealEngine
     UnrealEngineClient ueClient(VS_SERVER_IP, VS_SERVER_PORT);
 
     while (true) {
-        for (const auto& mid : grpMidList) {
-            web::json::value body = client.discoveryCIN(utility::conversions::to_string_t(mid));
-            auto parsedData = client.parseBody(body);
-            device.updateSensorData(parsedData);
-        }
-        device.evaluateDangerLevel();
-        device.printDeviceInfo();
-        if (ueClient.isServerAvailable()) {
+        for (auto& device : devices) {
+            for (const auto& uri : device.cntUris) {
+                web::json::value body = client.discoveryCIN(utility::conversions::to_string_t(uri));
+                auto parsedData = client.parseBody(body);
+                device.updateSensorData(parsedData);
+            }
+            device.evaluateDangerLevel();
+            device.printDeviceInfo();
             ueClient.sendData(device);
-        } else {
-            std::cerr << "Skipping transmission: Unreal Engine server is not running." << std::endl;
         }
-        std::this_thread::sleep_for(std::chrono::seconds(device.updateInterval));
-
-        // send to ue5
+        std::this_thread::sleep_for(std::chrono::seconds(UPDATE_INTERVAL));
     }
-
-
 
     return 0;
 

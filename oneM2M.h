@@ -24,9 +24,9 @@ public:
     void setRI(const utility::string_t &ri);
 
     pplx::task<void> verifyCSE();
-    pplx::task<std::vector<utility::string_t>> fetchGRPMid();
+    pplx::task<std::vector<utility::string_t>> fetchGRPMid(const utility::string_t &aeName);
     pplx::task<void> ensureSubscription(const utility::string_t &subName);
-    web::json::value discoveryCIN(const utility::string_t &cntName);
+    web::json::value discoveryCIN(const utility::string_t &cntUri);
     std::pair<std::string, std::vector<double>> parseBody(const web::json::value &body);
     void startNotificationServer(std::promise<void>& serverStarted);
 
