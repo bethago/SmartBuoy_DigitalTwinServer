@@ -33,13 +33,13 @@ void UnrealEngineClient::sendData(const TwinDevice& device) {
         socket.connect(ip::tcp::endpoint(ip::address::from_string(serverIp), serverPort));
 
         json jsonData = {
-            {"deviceId", device.deviceId},
-            {"deviceName", device.deviceName},
-            {"dangerState", static_cast<int>(device.dangerState)},
+            // {"deviceId", device.deviceId},
+            {"dn", device.deviceName},  // deviceName
+            {"ds", static_cast<int>(device.dangerState)},   // dangerState
             {"gps", {
-                {"latitude", device.sensorData.gps[0]},
-                {"longitude", device.sensorData.gps[1]},
-                {"altitude", device.sensorData.gps[2]}
+                {"lat", device.sensorData.gps[0]}, // latitude
+                {"lon", device.sensorData.gps[1]},    // longitude
+                {"alt", device.sensorData.gps[2]}   // altitude
             }}
         };
 
