@@ -53,6 +53,12 @@ void TwinDevice::evaluateDangerLevel() {
     double wavePeriod = calculateWavePeriod();
     double waveHeight = sensorData.ultrasonic;
 
+    if (deviceId == 1) dangerState = DangerLevel::SAFE;
+    else if (deviceId == 2) dangerState = DangerLevel::CAUTION;
+    else if (deviceId == 3) dangerState = DangerLevel::ALERT;
+    else if (deviceId == 4) dangerState = DangerLevel::DANGER;
+    return;
+
     if (waveHeight >= 4 && wavePeriod > 11.0) {
         dangerState = DangerLevel::DANGER;
     } else if (waveHeight >= 2 && wavePeriod >= 8.0 && wavePeriod <= 11.0) {

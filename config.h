@@ -1,9 +1,8 @@
 #ifndef CONFIG_H
 #define CONFIG_H
 
-#define CLIENT_COUNT 3
-#define CLIENT "BUOY1"
-#define CLIENTS {"BUOY1", "BUOY2", "BUOY3"}
+#define CLIENT_COUNT 4
+#define CLIENTS {"BUOY1", "BUOY2", "BUOY3", "BUOY4"}
 #define UPDATE_INTERVAL 1
 
 #define CSE_SERVER_PROTOCOL "http"
