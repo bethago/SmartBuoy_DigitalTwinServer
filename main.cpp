@@ -68,31 +68,4 @@ int main() {
     }
 
     return 0;
-
-
-    /* don't know how to work sub function in TinyIoT... so just use discovery instead
-    std::cout << "Starting notification server..." << std::endl;
-    std::promise<void> serverStarted;
-    std::future<void> serverReady = serverStarted.get_future();
-
-    std::thread notificationThread([&client, &serverStarted]() {
-        client.startNotificationServer(serverStarted);
-    });
-    notificationThread.detach();
-
-    std::cout << "Waiting for notification server to start..." << std::endl;
-    serverReady.wait();
-    std::cout << "Notification server started successfully!" << std::endl;
-
-    int wait;
-    std::cin >> wait;
-
-    int subID = 1;
-    for (const auto& mid : grpMidList) {
-        std::cout << "Ensuring subscription for: " << utility::conversions::to_utf8string(mid) << std::endl;
-        utility::string_t subName = utility::string_t(U(CLIENT)) + U("_sub") + utility::conversions::to_string_t(std::to_string(subID));
-        client.ensureSubscription(subName).wait();
-        ++subID;
-    }
-    */
 }
