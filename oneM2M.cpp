@@ -155,7 +155,7 @@ void OneM2MClient::startNotificationServer(std::promise<void>& serverStarted) {
 
     listener->open().then([&serverStarted]() {
         std::wcout << L"Notification server started at: http:" << U(SUB_NOTIFY_URL) << std::endl;
-        serverStarted.set_value();  // 서버가 시작되었음을 알림
+        serverStarted.set_value();
     }).wait();
 
     std::thread([listener]() {
